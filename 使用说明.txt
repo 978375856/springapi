@@ -1,0 +1,4 @@
+框架使用说明
+1.数据库版本mysql5.7
+2.maven 需要采用idea里面的不要用自己的，不然依赖加载会报错：org.apache.ibatis.annotations.Param
+3.Springapi拼写错误，将Springapi保存到词典
