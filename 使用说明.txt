@@ -2,3 +2,9 @@
 1.数据库版本mysql5.7
 2.maven 需要采用idea里面的不要用自己的，不然依赖加载会报错：org.apache.ibatis.annotations.Param
 3.Springapi拼写错误，将Springapi保存到词典
+4.克隆项目请先修改项目名称，不要在springapi项目编辑，具体操作，克隆时修改克隆项目保存目录如springapi2，克隆完成后删除springapi的git信息，
+4.1删除diea项目下.idea配置文件下的vcs.xml文件，这里存储版本控制相关的信息，如 Git、SVN 等
+4.2.删除项目文件夹下的.git文件，这个文件就是git的本地仓库
+4.3 设置-版本控制-目录映射删除
+4.4 重新在github共享新的项目名称
+
