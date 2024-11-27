@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springapi.dao.UsersDao">
+
+    <resultMap type="com.springapi.entity.Users" id="UsersMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="INTEGER"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="country" column="country" jdbcType="VARCHAR"/>
+        <result property="province" column="province" jdbcType="VARCHAR"/>
+        <result property="city1" column="city1" jdbcType="VARCHAR"/>
+        <result property="city2" column="city2" jdbcType="VARCHAR"/>
+        <result property="vip" column="vip" jdbcType="VARCHAR"/>
+        <result property="points" column="points" jdbcType="INTEGER"/>
+        <result property="vipenddate" column="vipenddate" jdbcType="TIMESTAMP"/>
+        <result property="birthday" column="birthday" jdbcType="TIMESTAMP"/>
+        <result property="permission" column="permission" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UsersMap">
+        select
+id, name, phone, address, country, province, city1, city2, vip, points, vipenddate, birthday, permission
+        from users
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="UsersMap">
+        select
+id, name, phone, address, country, province, city1, city2, vip, points, vipenddate, birthday, permission
+        from users
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="phone != null">
+                and phone = #{phone}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="country != null and country != ''">
+                and country = #{country}
+            </if>
+            <if test="province != null and province != ''">
+                and province = #{province}
+            </if>
+            <if test="city1 != null and city1 != ''">
+                and city1 = #{city1}
+            </if>
+            <if test="city2 != null and city2 != ''">
+                and city2 = #{city2}
+            </if>
+            <if test="vip != null and vip != ''">
+                and vip = #{vip}
+            </if>
+            <if test="points != null">
+                and points = #{points}
+            </if>
+            <if test="vipenddate != null">
+                and vipenddate = #{vipenddate}
+            </if>
+            <if test="birthday != null">
+                and birthday = #{birthday}
+            </if>
+            <if test="permission != null and permission != ''">
+                and permission = #{permission}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from users
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="phone != null">
+                and phone = #{phone}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="country != null and country != ''">
+                and country = #{country}
+            </if>
+            <if test="province != null and province != ''">
+                and province = #{province}
+            </if>
+            <if test="city1 != null and city1 != ''">
+                and city1 = #{city1}
+            </if>
+            <if test="city2 != null and city2 != ''">
+                and city2 = #{city2}
+            </if>
+            <if test="vip != null and vip != ''">
+                and vip = #{vip}
+            </if>
+            <if test="points != null">
+                and points = #{points}
+            </if>
+            <if test="vipenddate != null">
+                and vipenddate = #{vipenddate}
+            </if>
+            <if test="birthday != null">
+                and birthday = #{birthday}
+            </if>
+            <if test="permission != null and permission != ''">
+                and permission = #{permission}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into users(name, phone, address, country, province, city1, city2, vip, points, vipenddate, birthday, permission)
+        values (#{name}, #{phone}, #{address}, #{country}, #{province}, #{city1}, #{city2}, #{vip}, #{points}, #{vipenddate}, #{birthday}, #{permission})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into users(name, phone, address, country, province, city1, city2, vip, points, vipenddate, birthday, permission)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.name}, #{entity.phone}, #{entity.address}, #{entity.country}, #{entity.province}, #{entity.city1}, #{entity.city2}, #{entity.vip}, #{entity.points}, #{entity.vipenddate}, #{entity.birthday}, #{entity.permission})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into users(name, phone, address, country, province, city1, city2, vip, points, vipenddate, birthday, permission)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.name}, #{entity.phone}, #{entity.address}, #{entity.country}, #{entity.province}, #{entity.city1}, #{entity.city2}, #{entity.vip}, #{entity.points}, #{entity.vipenddate}, #{entity.birthday}, #{entity.permission})
+        </foreach>
+        on duplicate key update
+name = values(name),
+phone = values(phone),
+address = values(address),
+country = values(country),
+province = values(province),
+city1 = values(city1),
+city2 = values(city2),
+vip = values(vip),
+points = values(points),
+vipenddate = values(vipenddate),
+birthday = values(birthday),
+permission = values(permission)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update users
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="country != null and country != ''">
+                country = #{country},
+            </if>
+            <if test="province != null and province != ''">
+                province = #{province},
+            </if>
+            <if test="city1 != null and city1 != ''">
+                city1 = #{city1},
+            </if>
+            <if test="city2 != null and city2 != ''">
+                city2 = #{city2},
+            </if>
+            <if test="vip != null and vip != ''">
+                vip = #{vip},
+            </if>
+            <if test="points != null">
+                points = #{points},
+            </if>
+            <if test="vipenddate != null">
+                vipenddate = #{vipenddate},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday},
+            </if>
+            <if test="permission != null and permission != ''">
+                permission = #{permission},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from users where id = #{id}
+    </delete>
+
+</mapper>
+
