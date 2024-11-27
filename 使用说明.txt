@@ -12,5 +12,3 @@
 5.2 选择表右键采用easycode插件
 6.版本控制问题
 6.1必须用工具-版本控制-设置令牌登录
-7.1 启动：SpringapiApplication界面右键运行
-7.2 启动后访问地址：http://localhost:8080/users/1
